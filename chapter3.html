@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 – Games & Love</title>
+<style>
+body{font-family:Poppins,Arial,Helvetica,sans-serif;background:#ffeff7;text-align:center;margin:0;padding:20px;}
+.hidden{display:none;}
+button{padding:10px 20px;margin:10px;border:none;border-radius:8px;background:#ff4da6;color:white;font-weight:bold;cursor:pointer;transition:0.3s;}
+button:hover{background:#ff3385;}
+#xo-board{display:grid;grid-template-columns:repeat(3,80px);gap:10px;justify-content:center;margin:20px auto;}
+#xo-board button{width:80px;height:80px;font-size:30px;background:#fff;color:#ff4da6;border:2px solid #ff4da6;}
+.card-grid{display:grid;grid-template-columns:repeat(4,80px);gap:10px;justify-content:center;margin-top:20px;}
+.card{width:80px;height:80px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid #ff4da6;}
+.floating-heart{position:fixed;font-size:24px;color:red;animation:floatUp 3s ease-out forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-150px);}}
+</style>
+</head>
+<body>
+
+<h1>💞 Chapter 3 – Our Fun Journey 💞</h1>
+
+<!-- ===== RIDDLES ===== -->
+<div id="riddle1">
+  <h2>🧩 Riddle 1</h2>
+  <p>I fly without wings, I cry without eyes. What am I?</p>
+  <input id="riddle1-input" placeholder="Type your answer">
+  <button onclick="checkRiddle1()">Submit</button>
+  <p id="riddle1-msg"></p>
+</div>
+
+<div id="riddle2" class="hidden">
+  <h2>🧩 Riddle 2</h2>
+  <p>I’m always running but never get tired or stop. What am I?</p>
+  <input id="riddle2-input" placeholder="Type your answer">
+  <button onclick="checkRiddle2()">Submit</button>
+  <p id="riddle2-msg"></p>
+</div>
+
+<div id="special-riddle" class="hidden">
+  <h2>💖 Special Riddle</h2>
+  <p>The answer is someone special… Who makes you smile every day? 😏</p>
+  <input id="special-answer" placeholder="Your answer">
+  <button onclick="checkSpecial()">Submit</button>
+  <p id="special-msg"></p>
+</div>
+
+<!-- ===== XO GAME ===== -->
+<div id="xo-game" class="hidden">
+  <h2 onclick="showCodeInput()">XO Game 🕹️ (Click here to enter code after you win!)</h2>
+  <p>Play together! You = X, Me = O</p>
+  <div id="xo-board">
+    <button onclick="makeMove(0)"></button>
+    <button onclick="makeMove(1)"></button>
+    <button onclick="makeMove(2)"></button>
+    <button onclick="makeMove(3)"></button>
+    <button onclick="makeMove(4)"></button>
+    <button onclick="makeMove(5)"></button>
+    <button onclick="makeMove(6)"></button>
+    <button onclick="makeMove(7)"></button>
+    <button onclick="makeMove(8)"></button>
+  </div>
+  <p id="xo-msg"></p>
+  <button onclick="resetXO()">Reset XO ♻️</button>
+
+  <div id="manual-code-section" class="hidden" style="margin-top:20px;">
+    <input type="text" id="manual-secret-code" placeholder="Enter secret code">
+    <button onclick="checkManualCode()">Confirm</button>
+    <p id="manual-code-msg"></p>
+  </div>
+</div>
+
+<!-- ===== MEMORY GAME ===== -->
+<div id="memory-game" class="hidden">
+  <h2>🧠 Memory Card Game</h2>
+  <p>Find all the pairs to finish!</p>
+  <div class="card-grid" id="memory-grid"></div>
+  <p id="memory-msg"></p>
+</div>
+
+<!-- ===== SECRET NUMBER MESSAGE ===== -->
+<div id="secret-msg-section" class="hidden">
+  <h2>💌 Secret Message 💌</h2>
+  <p>Click below to type the secret number:</p>
+  <input type="text" id="secret-input" placeholder="Type the secret number">
+  <button onclick="checkSecretNumber()">Confirm</button>
+<button><a href="story.html">back to story</a></button>
+  <p id="secret-msg"></p>
+</div>
+
+<!-- ===== FINAL MESSAGE ===== -->
+<div id="final-message" class="hidden">
+  <h2>🎉 You Finished! 🎉</h2>
+  <p>Bravo bante 💖 You passed all games! Now you can go back to home page and open your next chapter 😉</p>
+</div>
+
+<script>
+// ===== RIDDLES =====
+function checkRiddle1(){
+  const a=document.getElementById('riddle1-input').value.toLowerCase().trim();
+  if(a.includes("cloud")||a.includes("sky")||a.includes("wind")){
+    document.getElementById('riddle1-msg').innerText="✅ Good job! Next riddle!";
+    document.getElementById('riddle1').classList.add('hidden');
+    document.getElementById('riddle2').classList.remove('hidden');
+  }else{
+    document.getElementById('riddle1-msg').innerText="❌ Nope, try again 😉";
+  }
+}
+function checkRiddle2(){
+  const a=document.getElementById('riddle2-input').value.toLowerCase().trim();
+  if(a.includes("river")||a.includes("time")){
+    document.getElementById('riddle2-msg').innerText="✅ Niceee a bante! Now one special riddle 💖";
+    document.getElementById('riddle2').classList.add('hidden');
+    document.getElementById('special-riddle').classList.remove('hidden');
+  }else{
+    document.getElementById('riddle2-msg').innerText="❌ Not yet ba3loka!";
+  }
+}
+function checkSpecial(){
+  const a=document.getElementById('special-answer').value.toLowerCase().trim();
+  if(a==="wliyed"){
+    document.getElementById('special-msg').innerText="🥰 Bravoo banteee! Let's play XO now!";
+    setTimeout(()=>{
+      document.getElementById('special-riddle').classList.add('hidden');
+      document.getElementById('xo-game').classList.remove('hidden');
+    },800);
+  }else{
+    document.getElementById('special-msg').innerText="❌ Haha nooo, think of your wliyed 💗";
+  }
+}
+
+// ===== XO GAME =====
+let board=Array(9).fill("");
+let turn="X";
+function makeMove(i){
+  if(board[i]===""){
+    board[i]=turn;
+    document.querySelectorAll('#xo-board button')[i].innerText=turn;
+    turn=(turn==="X")?"O":"X";
+  }
+}
+function resetXO(){
+  board.fill("");
+  document.querySelectorAll('#xo-board button').forEach(b=>b.innerText="");
+  turn="X";
+  document.getElementById('xo-msg').innerText="XO reset – go again!";
+}
+function showCodeInput(){
+  document.getElementById('manual-code-section').classList.remove('hidden');
+}
+function checkManualCode(){
+  const code=document.getElementById('manual-secret-code').value.trim();
+  if(code==="4565"){
+    document.getElementById('manual-code-msg').innerText="✅ Correct! Memory Game unlocked!";
+    setTimeout(()=>{
+      document.getElementById('xo-game').classList.add('hidden');
+      document.getElementById('memory-game').classList.remove('hidden');
+      startMemoryGame();
+    },800);
+  }else{
+    document.getElementById('manual-code-msg').innerText="❌ Wrong code, try again!";
+  }
+}
+
+// ===== MEMORY GAME =====
+let symbols=["💖","💖","🌹","🌹","💫","💫","🎁","🎁"];
+let firstCard=null,lock=false,matched=0;
+function startMemoryGame(){
+  const grid=document.getElementById('memory-grid');
+  grid.innerHTML="";
+  matched=0;firstCard=null;lock=false;
+  symbols.sort(()=>Math.random()-0.5);
+  symbols.forEach(sym=>{
+    const div=document.createElement('div');
+    div.classList.add('card');
+    div.dataset.symbol=sym;
+    div.innerText="❓";
+    div.onclick=function(){flipCard(div)};
+    grid.appendChild(div);
+  });
+}
+function flipCard(card){
+  if(lock||card.classList.contains('matched')||card===firstCard)return;
+  card.innerText=card.dataset.symbol;
+  if(!firstCard){firstCard=card;}
+  else{
+    if(card.dataset.symbol===firstCard.dataset.symbol){
+      card.classList.add('matched');firstCard.classList.add('matched');
+      matched+=2;firstCard=null;
+      if(matched===symbols.length){
+        document.getElementById('memory-msg').innerText="🎉 You found all pairs!";
+        setTimeout(()=>{
+          document.getElementById('memory-game').classList.add('hidden');
+          document.getElementById('secret-msg-section').classList.remove('hidden');
+        },800);
+      }
+    }else{
+      lock=true;
+      setTimeout(()=>{
+        card.innerText="❓";
+        firstCard.innerText="❓";
+        firstCard=null;lock=false;
+      },800);
+    }
+  }
+}
+
+// ===== SECRET NUMBER =====
+function checkSecretNumber(){
+  const val=document.getElementById('secret-input').value.replace(/\s/g,'');
+  if(val==="14042026"){
+    document.getElementById('secret-msg').innerHTML="🎉 mmmm bravo 3la bante 😘 annnnnd fnadarak had numbers makay3ne walo? 😂";
+    // create floating hearts
+    for(let i=0;i<20;i++){
+      let heart=document.createElement('div');
+      heart.className="floating-heart";
+      heart.style.left=Math.random()*90+"%";
+      heart.innerText="❤️";
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(),3000);
+    }
+  }else{
+    document.getElementById('secret-msg').innerText="❌ Not yet, try again!";
+  }
+}
+</script>
+
+</body>
+</html>

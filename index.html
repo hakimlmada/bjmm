@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>For My Ba3lokty 💌</title>
+<style>
+  :root{
+    --bg1: linear-gradient(135deg,#ffecef,#fff7f9);
+    --accent:#ff3366;
+  }
+  body{ margin:0; font-family: "Poppins", sans-serif; background:var(--bg1); color:#222; display:flex; justify-content:center; padding:30px 15px; }
+  .wrap{ width:100%; max-width:900px; background:white; border-radius:18px; padding:26px; box-shadow:0 8px 30px rgba(0,0,0,0.08); }
+  h1{ color:var(--accent); margin:0 0 8px 0; }
+  p.lead{ color:#666; margin:0 0 18px; }
+  .quiz, .memories { margin-top:18px; }
+  input[type="text"], input[type="password"]{
+    padding:10px 12px; border-radius:10px; border:1px solid #eee; width:60%; font-size:15px;
+  }
+  .opt{ display:inline-block; margin:6px 6px 6px 0; padding:8px 12px; border-radius:10px; background:#fff0f3; border:1px solid rgba(255,51,102,0.12); cursor:pointer; }
+  button{ background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
+  button.ghost{ background:transparent; color:var(--accent); border:1px solid rgba(255,51,102,0.12); }
+  .message{ margin-top:12px; font-weight:700; min-height:28px; color:#333; }
+  .hidden{ display:none; }
+  .popup{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; padding:28px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.15); display:none; text-align:center; }
+  .photos img{ width:150px; height:150px; object-fit:cover; margin:10px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
+  .countdown{ font-size:22px; color:var(--accent); font-weight:800; margin-top:8px; }
+  #skipBtn{ position:fixed; bottom:12px; right:12px; background:#999; padding:8px 10px; font-size:13px; border-radius:8px; border:none; color:#fff; cursor:pointer; }
+  .nav-btn{ margin-top:18px; }
+.photo-card {
+  width: 250px;
+  background: #fff0f7;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  margin: 20px auto;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.photo-card:hover {
+  transform: scale(1.05);
+}
+
+.card-img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #ff4da6;
+  font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>💞 For My Ba3lokty 💞</h1>
+    <p class="lead">Answer the questions to unlock your surprise. Read carefully and enjoy ❤️</p>
+
+    <!-- QUIZ -->
+    <div class="quiz" id="quiz">
+      <div id="questionBox"></div>
+      <div class="message" id="message"></div>
+    </div>
+
+    <!-- CONCEPT POPUP -->
+    <div class="popup" id="popup">
+      <h2>🎉 You did it my love! ❤️</h2>
+      <p>Now you can see our memories and the secret pages I made for you.</p>
+      <div style="margin-top:14px;">
+        <button onclick="showMemories()">Show Website 💖</button>
+      </div>
+    </div>
+
+    <!-- MEMORIES (hidden until quiz done or skip) -->
+    <div class="memories hidden" id="memories">
+    
+    <div class="photo-card">
+  <img src="photo1.jpg" alt="Us together" class="card-img">
+  <p class="card-text">Our first memory together ❤️</p>
+    </div>
+    <div class="photo-card">
+  <img src="photo2.jpg" alt="Us together" class="card-img">
+    </div>
+    <div class="photo-card">
+  <img src="photo3.jpg" alt="Us together" class="card-img">
+    </div>
+   
+
+
+      <div class="nav-btn">
+        <button onclick="location.href='story.html'">Our Story 💕</button>
+      </div>
+    </div>
+
+    <button id="skipBtn" onclick="skipAll()">⏩ Skip All (for me)</button>
+
+  </div>
+
+<script>
+/* ========== QUIZ DATA (includes all your questions) ========== */
+const quizData = [
+  { q: "Where we meet in the first time?", type:"text", a:"opheon", good:"ahhh nadya hada awal so2al a zwena 💞", bad:"laaaa a ba3loka 😅" },
+  { q: "Chno katgoli liya?", type:"text", a:"wliyed", good:"an7sbha s7e7a ms rah normalement wliyed dyaaaleee 😍", bad:"laaaa a ba3loka 😅" },
+  { q: "Ch7al kat3rfi 3liya jawbe b % ?", type:"text", a:"70%", good:"tsdmtyy yak haha ewa rah baaa9e a 3mera anwarek bzaf blayas 💖", bad:"laaaa a ba3loka 😅" },
+  { q: "Ana o banty inda mdena nskno feha men hna 9odaaaam? (Rabat / Tetouan / Oujda / Tanger)", type:"choice", options:["Rabat","Tetouan","Oujda","Tanger"], a:"Tetouan", good:"emmmmm yess a hbebteeee 😍", bad:"wa tetouaaan albgraaa 😂" },
+  /* new questions the user asked to add */
+  { q: "Chno howa my best food?", type:"choice", options:["nti","bastila","l7am bal bar9o9"], a:"l7am bal bar9o9", good:"bravoo 3la bantee ishble atgoli nty haha 😂", bad:"wa lbastila lbastila chman answer ya had bagra 😆", popup:"gha dahak a bante ana 3ande bneta w7eda 💖" },
+  { q: "Bghite tchofi wa7ed haja zwena? (oui/non)", type:"choice", options:["oui","non"], a:"oui", good:"Okay ready? 😍", showImage:true },
+  { q: "Chno aychru wliyad man hna 9odam? (car / motorcycle)", type:"choice", options:["car","motorcycle"], a:"motorcycle", good:"chokren beb caus you choose a motorcycle for me 😍", switchAnswer:true },
+  { q: "Birthday dyal wliyed? (format DD/MM/YYYY)", type:"text", a:"25/08/2004", good:"hay hay 3la bante bravo 3leeeeeeeeeek 🎂🎉", showImage:true },
+  { q: "3a9la 3al wahed site kant a9deto ch7al hadi lena kamlen and ba3loka send t me wahed msg ?", type:"choice", options:["oui","non"], a:"oui", good:"haha ha howa 😍", showImage:true, last:true }
+];
+
+let current = 0;
+const box = document.getElementById('questionBox');
+const messageEl = document.getElementById('message');
+
+function showQuestion(){
+  const q = quizData[current];
+  let html = `<h3>Q${current+1}: ${q.q}</h3>`;
+  if(q.type === "text"){
+    html += `<input type="text" id="answer" placeholder="Your answer..." /> <button onclick="checkAnswer()">Answer</button>`;
+  } else if(q.type === "choice"){
+    html += q.options.map(opt => `<div><button class="opt" onclick="checkAnswer('${opt}')">${opt}</button></div>`).join('');
+  }
+  box.innerHTML = html;
+  messageEl.textContent = "";
+}
+
+function checkAnswer(opt){
+  const q = quizData[current];
+  let ans = q.type === "text" ? (document.getElementById('answer').value || "").trim() : opt;
+  if(q.switchAnswer && ans.toLowerCase() === 'car') ans = 'motorcycle'; // playful switch if user chose car
+  if(ans.toLowerCase() === q.a.toLowerCase()){
+    messageEl.textContent = q.good || "Correct!";
+    if(q.popup) alert(q.popup);
+    // if showImage => show countdown + reveal a picture for 5s
+    if(q.showImage){
+      showImageCountdown();
+    } else {
+      // wait small time so she can read — then show Next button
+      messageEl.innerHTML += `<br><button style="margin-top:10px;" onclick="nextQuestion()">Next ➡️</button>`;
+    }
+  } else {
+    messageEl.textContent = q.bad || "Nope, try again!";
+    // for text questions allow retry
+    if(q.type === "text"){
+      messageEl.innerHTML += `<br><button style="margin-top:8px;" onclick="showQuestion()">Try again</button>`;
+    }
+  }
+}
+
+function showImageCountdown(){
+  const html = `<div class="countdown">5</div><div style="margin-top:8px;"><img src="special.jpg" alt="special" style="max-width:100%; border-radius:12px;"/></div>`;
+  messageEl.innerHTML = html;
+  let c = 5;
+  const timer = setInterval(()=>{
+    c--;
+    const cd = messageEl.querySelector('.countdown');
+    if(cd) cd.textContent = c;
+    if(c === 0){
+      clearInterval(timer);
+      messageEl.innerHTML = `safeee sala wa9t hahah 😜 <br><button onclick="nextQuestion()">Next ➡️</button>`;
+    }
+  },1000);
+}
+
+function nextQuestion(){
+  current++;
+  if(current >= quizData.length){
+    // show popup concept
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('quiz').style.display = 'none';
+  } else {
+    showQuestion();
+  }
+}
+
+function showMemories(){
+  document.getElementById('popup').style.display = 'none';
+  document.getElementById('memories').classList.remove('hidden');
+  // scroll to memories
+  document.getElementById('memories').scrollIntoView({behavior:'smooth'});
+}
+
+function skipAll(){
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('popup').style.display = 'none';
+  document.getElementById('memories').classList.remove('hidden');
+}
+
+showQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Our Story 💕</title>
+<style>
+  body{ margin:0; font-family:"Poppins",sans-serif; background:linear-gradient(180deg,#fff6fb,#fff); color:#222; padding:30px; display:flex; justify-content:center; }
+  .wrap{ width:100%; max-width:900px; background:white; border-radius:18px; padding:26px; box-shadow:0 8px 30px rgba(0,0,0,0.06); }
+  h1{ color:#ff3366; margin:0 0 8px; }
+  .story-block{ margin:26px 0; padding:18px; border-radius:12px; background:#fff7f9; border:1px solid rgba(255,51,102,0.06); }
+  .story-block img{ width:100%; border-radius:12px; margin-top:12px; box-shadow:0 8px 18px rgba(0,0,0,0.06); }
+  .card{ background:#fff3f8; border-radius:12px; padding:16px; margin-top:12px; }
+  button{ background:#ff3366; color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; }
+  button.ghost{ background:transparent; color:#ff3366; border:1px solid rgba(255,51,102,0.12); }
+  #chapter2-lock{background:#fff0f7; padding:20px; border-radius:12px; margin-top:12px; text-align:center;}
+  #chapter2-content.hidden{display:none;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>💞 Our Story</h1>
+    <p style="font-style:italic; color:#666;">From Morocco 🇲🇦 to Canada 🇨🇦 — chapters of our love, our laughs, and our plans ✨</p>
+
+    <!-- Chapter 1 -->
+    <div class="story-block">
+      <h2>Chapter 1 — For my Bante 💖</h2>
+      <div class="card">
+    <p>😄💬 <strong>is bante happy?</strong> 😚 or not? 😢 so ana farhan 😁 caus ba9e 3la wa3de l bante 💍 and ba9e tal daba ga3 wo3od 💬 le 3ateha ghade fehom inchaAllah 🙏 maykon gher lkheeer a ba3lokty 💕✨</p> <p>i do this for bante 😍 caus kanbghe nrsm leha dahka 3la wjaha 😄💋 dema kangolk 💭 bele wlah hta danya 🌍 o mafeha 3ande hiya nchofk farhana 🥰 wakha ba3d merat bante kat9as7 rasha 😅 walken rah katrj3 lklami flakhar 😌💞</p> <p>nty o ana ❤️ 3arfen bele fach kan7rm 3la bante chi haja 🙈 rah machi ded a 3omre nooo 😘 its better liya o leha 🌸</p> <p>and ana aslan 😄 3lach kankteb hadchi o ana far7an haa? 🤔 3lach? 💭 wa hetach bante kats3 😌 le kat7rm rasha 3la wade 💪 3la ch7al man haja katsm3 li lhdrty 😚</p> <p>(ba9e kaytsanawk chi 7wayj zwenen fhad website beb 😏💌) ill be happy 😍 ila chaft bante waslat ldakche le tabghe wasla 🎯 les objectif dyalha 💪 waslat les projet le bagah der 💼 pfff imagine 😍 we have our projecttt bwahed chiffre d'affaire le kbeeer 💰💫 haa? zwena yak 😍</p> <p>and bante tachry ay haja bghat 🛍️ f ay wa9t bghat ⏰ hta haja mas3eba 😌 bchwiya bchwiya a b3loktyy 💪💖</p> <p>baaaa9e tab3na bzaf a ba3lokty 💞💫 ❤️🌍 forever you & me ❤️🌍</p>
+      </div>
+    </div>
+
+    <!-- Chapter 2 placeholder (LOCKED) -->
+    <div class="story-block">
+      <h2>Chapter 2 — Pictures & Places 📸</h2>
+      <div id="chapter2-lock">
+        <p>🔒 This chapter is locked! Enter the password to unlock:</p>
+        <input type="text" id="chapter2-pass" placeholder="Type password here">
+        <button onclick="checkChapter2Pass()">Unlock</button>
+        <p id="chapter2-msg" style="color:#ff3366; margin-top:8px;"></p>
+      </div>
+    </div>
+
+    <!-- Chapter 3 button -->
+    <div style="margin-top:20px; text-align:center;">
+      <button onclick="location.href='chapter3.html'">Go to Chapter 3 — Puzzle 🧩</button>
+      <p style="color:#666; margin-top:10px;">(Chapter 3 = riddle + XO game + code unlock)</p>
+    </div>
+    <div class="story-block">
+      <h2>Chapter 4 BLOCKED</h2>
+      <div id="chapter2-lock">
+        <p>🔒 This chapter is locked! Enter the password to unlock:</p>
+        <input type="text" id="chapter2-pass" placeholder="Type password here">
+        <button>Unlock</button>
+        <p id="chapter2-msg" style="color:#ff3366; margin-top:8px;"></p>
+      </div>
+    </div>
+  <div class="story-block">
+      <h2>Chapter 5 BLOCKED</h2>
+      <div id="chapter2-lock">
+        <p>🔒 This chapter is locked! Enter the password to unlock:</p>
+        <input type="text" id="chapter2-pass" placeholder="Type password here">
+        <button>Unlock</button>
+        <p id="chapter2-msg" style="color:#ff3366; margin-top:8px;"></p>
+      </div>
+    </div>
+    <div style="margin-top:22px;">
+      <button class="ghost" onclick="location.href='index.html'">⬅️ Back to Home</button>
+    </div>
+  </div>
+
+<script>
+function checkChapter2Pass(){
+  const val = document.getElementById('chapter2-pass').value.trim();
+  if(val === "WLIYED123"){
+    // Redirect to chapter 2 content page
+    window.location.href = "chapiter2-content.html";
+  } else {
+    document.getElementById('chapter2-msg').innerText = "❌ Wrong password, try again 😉";
+  }
+}
+</script>
+
+</body>
+</html>
