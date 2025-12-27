@@ -56,14 +56,15 @@
       </div>
     </div>
   <div class="story-block">
-      <h2>Chapter 5 BLOCKED</h2>
-      <div id="chapter2-lock">
-        <p>🔒 This chapter is locked! Enter the password to unlock:</p>
-        <input type="text" id="chapter2-pass" placeholder="Type password here">
-        <button>Unlock</button>
-        <p id="chapter2-msg" style="color:#ff3366; margin-top:8px;"></p>
-      </div>
-    </div>
+  <h2>Chapter 5 BLOCKED</h2>
+  <div id="chapter4-lock">
+    <p>🔒 This chapter is locked! Enter the password to unlock:</p>
+    <input type="text" id="chapter4-pass" placeholder="Type password here">
+    <button onclick="checkChapter4Pass()">Unlock</button>
+    <p id="chapter4-msg" style="color:#ff3366; margin-top:8px;"></p>
+  </div>
+</div>
+
     <div style="margin-top:22px;">
       <button class="ghost" onclick="location.href='index.html'">⬅️ Back to Home</button>
     </div>
@@ -80,6 +81,17 @@ function checkChapter2Pass(){
   }
 }
 </script>
+<script>
+function checkChapter4Pass(){
+  const val = document.getElementById('chapter4-pass').value.trim();
+  if(val === "nocode"){
+    window.location.href = "pj/index.html"; // include the folder
+  } else {
+    document.getElementById('chapter4-msg').innerText = "❌ Wrong password, try again 😉";
+  }
+}
+</script>
 
 </body>
 </html>
+
