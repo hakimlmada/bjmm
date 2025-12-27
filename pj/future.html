@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Future</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  .card-question {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+    background-color: #fff;
+    transition: all 0.5s ease;
+  }
+  .btn-option {
+    margin: 5px;
+  }
+  .selected-option {
+    background-color: #0d6efd !important;
+    color: white !important;
+  }
+  #message {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+  }
+</style>
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4 mb-5 text-center">
+  <h2>🔮 Our Future</h2>
+
+  <h1 id="mood">😞</h1>
+  <div class="progress mb-4" style="height:25px;">
+    <div id="bar" class="progress-bar bg-danger" style="width:0%"></div>
+  </div>
+
+  <div id="question-container"></div>
+  <p id="message"></p>
+
+  <button id="confirmBtn" class="btn btn-primary mt-2">Confirm</button>
+  <a href="index.html" class="btn btn-outline-dark mt-4 d-block mx-auto" style="width:150px;">⬅ Back</a>
+</div>
+
+<script>
+const questions = [
+{
+q:"How do you want me to be?",
+opts:[
+{t:"Calm & patient",p:6,msg:""},
+{t:"3asabe",p:8,msg:""},
+{t:"Same as now 😅",p:10,msg:""}
+]
+},
+{
+q:"Work?",
+opts:[
+{t:"Work",p:4,msg:"Haka anb9a",sad:true}, // special sad option
+{t:"Business 💡",p:10,msg:""},
+{t:"Home",p:6,msg:""}
+]
+},
+{
+q:"How we move?",
+opts:[
+{t:"Car/moto",p:10,msg:""},
+{t:"Cars",p:6,msg:""},
+{t:"Motos",p:8,msg:""}
+]
+},
+{
+q:"Live?",
+opts:[
+{t:"House 🏠",p:10,msg:""},
+{t:"Apartment 🏢",p:8,msg:""},
+{t:"Farm 🌾",p:10,msg:""}
+]
+},
+{
+q:"Problems?",
+opts:[
+{t:"Talk calmly together 🤍",p:10,msg:"baaz dakchyle kadere? Haaa? Gha fakrene nadwew 3la hade fach tsale"},
+{t:"Take time then talk 🕊️",p:6,msg:"tatsali web site o anhdro"},
+{t:"Ignore & wait 😐",p:0,msg:""}
+]
+},
+{
+q:"Trust between us?",
+opts:[
+{t:"Full trust ❤️",p:10,msg:""},
+{t:"Trust with limits 🤝",p:6,msg:""},
+{t:"Hard to trust 😶",p:2,msg:""}
+]
+},
+{
+q:"Time together ehmm?",
+opts:[
+{t:"Day yes day no 💞",p:10,msg:"big boy: chokran"},
+{t:"Weekends 🥰",p:8,msg:""},
+{t:"When free only 😐",p:4,msg:""}
+]
+},
+{
+q:"When one of us is sad?",
+opts:[
+{t:"Always support & listen 💖",p:10,msg:""},
+{t:"Support when possible 🙂",p:6,msg:""},
+{t:"Everyone alone 😶",p:-2,msg:""}
+]
+},
+{
+q:"Romantic life?",
+opts:[
+{t:"Small surprises often 💌",p:6,msg:""},
+{t:"Only special days 🎉",p:8,msg:""},
+{t:"No change like this",p:10,msg:""},
+{t:"Not important 😅",p:2,msg:""}
+]
+},
+{
+q:"Fun together?",
+opts:[
+{t:"Laugh every day 🤣",p:10,msg:""},
+{t:"Sometimes 😊",p:8,msg:""},
+{t:"Rarely 😐",p:2,msg:""}
+]
+},
+{
+q:"Personal freedom?",
+opts:[
+{t:"Free but respectful 💖",p:10,msg:""},
+{t:"Limited freedom 😐",p:4,msg:""},
+{t:"Very strict 🚫",p:2,msg:""}
+]
+},
+{
+q:"Dreams & goals?",
+opts:[
+{t:"Build dreams together ✨",p:10,msg:""},
+{t:"Separate dreams 🎯",p:6,msg:""},
+{t:"No clear plans 😶",p:2,msg:""}
+]
+},
+{
+q:"Family life?",
+opts:[
+{t:"Very close ❤️",p:2,msg:""},
+{t:"Balanced 😊",p:8,msg:""},
+{t:"Independent 🚶",p:10,msg:""}
+]
+},
+{
+q:"Memories together?",
+opts:[
+{t:"Travel & photos ✈️",p:10,msg:""},
+{t:"Simple moments 🫶",p:6,msg:""},
+{t:"Rare memories 😐",p:2,msg:""}
+]
+}
+];
+
+let currentIndex = 0;
+let selectedOption = null;
+let scores = new Array(questions.length).fill(0);
+let workSad = false; 
+
+const container = document.getElementById("question-container");
+const mood = document.getElementById("mood");
+const bar = document.getElementById("bar");
+const message = document.getElementById("message");
+const confirmBtn = document.getElementById("confirmBtn");
+
+function showQuestion(index){
+  const q = questions[index];
+  container.innerHTML = "";
+  message.innerText = "";
+  selectedOption = null;
+
+  const card = document.createElement("div");
+  card.className = "card-question";
+
+  const title = document.createElement("h4");
+  title.innerText = q.q;
+  card.appendChild(title);
+
+  q.opts.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "btn btn-outline-primary btn-option";
+    btn.innerText = opt.t;
+
+    btn.onclick = () => {
+      q.opts.forEach(o => o.btnEl?.classList.remove("selected-option"));
+
+      btn.classList.add("selected-option");
+      selectedOption = opt;
+
+      if(opt.sad){
+        workSad = true;
+        scores[currentIndex] = 0; 
+      } else {
+        scores[currentIndex] = opt.p;
+      }
+
+      message.innerText = opt.msg || "";
+      updateMood();
+    };
+
+    opt.btnEl = btn;
+    card.appendChild(btn);
+  });
+
+  container.appendChild(card);
+}
+
+confirmBtn.onclick = () => {
+  if(!selectedOption){
+    alert("Please select an option first!");
+    return;
+  }
+  currentIndex++;
+  if(currentIndex < questions.length){
+    showQuestion(currentIndex);
+  } else {
+    container.innerHTML = "<h3>All done! 💖</h3>";
+    message.innerText = "";
+    confirmBtn.style.display = "none";
+    updateMood(true); 
+  }
+};
+
+function updateMood(final=false){
+  let totalScore = scores.reduce((a,b)=>a+b,0);
+
+  if(workSad) {
+    mood.innerText = "😞😞😞";
+    bar.style.width = "10%";
+    bar.className = "progress-bar bg-danger";
+    return;
+  }
+
+  const maxScore = questions.reduce((sum,q)=>sum+Math.max(...q.opts.map(o=>o.p)),0);
+  let percent = Math.round(totalScore/maxScore*100);
+
+  bar.style.width = percent + "%";
+  bar.className = "progress-bar";
+
+  if(percent <= 25) bar.classList.add("bg-danger");
+  else if(percent <= 60) bar.classList.add("bg-warning");
+  else bar.classList.add("bg-success");
+
+  let emojis = ["😞","😕","😐","🙂","😊","😄","😁","😍","🤩","🔥"];
+  let emojiIndex = Math.min(9, Math.floor(percent/10));
+  mood.innerText = emojis[emojiIndex];
+}
+
+showQuestion(currentIndex);
+</script>
+
+</body>
+</html>
