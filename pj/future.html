@@ -1,263 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Future</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>Future 🔮</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
 <style>
-  .card-question {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.2);
-    background-color: #fff;
-    transition: all 0.5s ease;
-  }
-  .btn-option {
-    margin: 5px;
-  }
-  .selected-option {
-    background-color: #0d6efd !important;
-    color: white !important;
-  }
-  #message {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 10px;
-  }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.fadeUp { animation: fadeUp .6s ease; }
 </style>
 </head>
 
-<body class="bg-light">
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center text-white">
 
-<div class="container mt-4 mb-5 text-center">
-  <h2>🔮 Our Future</h2>
+<div class="w-full max-w-lg px-4 text-center">
 
-  <h1 id="mood">😞</h1>
-  <div class="progress mb-4" style="height:25px;">
-    <div id="bar" class="progress-bar bg-danger" style="width:0%"></div>
+  <h2 class="text-3xl font-extrabold mb-2">🔮 Our Future</h2>
+
+  <h1 id="mood" class="text-6xl mb-4 transition-all">😞</h1>
+
+  <div class="w-full bg-white/20 rounded-full h-6 mb-6 overflow-hidden">
+    <div id="bar" class="h-full w-0 bg-red-500 transition-all duration-500"></div>
   </div>
 
   <div id="question-container"></div>
-  <p id="message"></p>
+  <p id="message" class="mt-3 text-sm text-pink-200 min-h-[20px]"></p>
 
-  <button id="confirmBtn" class="btn btn-primary mt-2">Confirm</button>
-  <a href="index.html" class="btn btn-outline-dark mt-4 d-block mx-auto" style="width:150px;">⬅ Back</a>
+  <button id="confirmBtn"
+    class="mt-4 px-6 py-2 rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-lg">
+    Confirm
+  </button>
+
+  <a href="index.html"
+    class="block mt-6 text-sm underline opacity-80 hover:opacity-100">
+    ⬅ Back
+  </a>
+
 </div>
 
 <script>
-const questions = [
-{
-q:"How do you want me to be?",
-opts:[
-{t:"Calm & patient",p:6,msg:""},
-{t:"3asabe",p:8,msg:""},
-{t:"Same as now 😅",p:10,msg:""}
-]
-},
-{
-q:"Work?",
-opts:[
-{t:"Work",p:4,msg:"Haka anb9a",sad:true}, // special sad option
-{t:"Business 💡",p:10,msg:""},
-{t:"Home",p:6,msg:""}
-]
-},
-{
-q:"How we move?",
-opts:[
-{t:"Car/moto",p:10,msg:""},
-{t:"Cars",p:6,msg:""},
-{t:"Motos",p:8,msg:""}
-]
-},
-{
-q:"Live?",
-opts:[
-{t:"House 🏠",p:10,msg:""},
-{t:"Apartment 🏢",p:8,msg:""},
-{t:"Farm 🌾",p:10,msg:""}
-]
-},
-{
-q:"Problems?",
-opts:[
-{t:"Talk calmly together 🤍",p:10,msg:"baaz dakchyle kadere? Haaa? Gha fakrene nadwew 3la hade fach tsale"},
-{t:"Take time then talk 🕊️",p:6,msg:"tatsali web site o anhdro"},
-{t:"Ignore & wait 😐",p:0,msg:""}
-]
-},
-{
-q:"Trust between us?",
-opts:[
-{t:"Full trust ❤️",p:10,msg:""},
-{t:"Trust with limits 🤝",p:6,msg:""},
-{t:"Hard to trust 😶",p:2,msg:""}
-]
-},
-{
-q:"Time together ehmm?",
-opts:[
-{t:"Day yes day no 💞",p:10,msg:"big boy: chokran"},
-{t:"Weekends 🥰",p:8,msg:""},
-{t:"When free only 😐",p:4,msg:""}
-]
-},
-{
-q:"When one of us is sad?",
-opts:[
-{t:"Always support & listen 💖",p:10,msg:""},
-{t:"Support when possible 🙂",p:6,msg:""},
-{t:"Everyone alone 😶",p:-2,msg:""}
-]
-},
-{
-q:"Romantic life?",
-opts:[
-{t:"Small surprises often 💌",p:6,msg:""},
-{t:"Only special days 🎉",p:8,msg:""},
-{t:"No change like this",p:10,msg:""},
-{t:"Not important 😅",p:2,msg:""}
-]
-},
-{
-q:"Fun together?",
-opts:[
-{t:"Laugh every day 🤣",p:10,msg:""},
-{t:"Sometimes 😊",p:8,msg:""},
-{t:"Rarely 😐",p:2,msg:""}
-]
-},
-{
-q:"Personal freedom?",
-opts:[
-{t:"Free but respectful 💖",p:10,msg:""},
-{t:"Limited freedom 😐",p:4,msg:""},
-{t:"Very strict 🚫",p:2,msg:""}
-]
-},
-{
-q:"Dreams & goals?",
-opts:[
-{t:"Build dreams together ✨",p:10,msg:""},
-{t:"Separate dreams 🎯",p:6,msg:""},
-{t:"No clear plans 😶",p:2,msg:""}
-]
-},
-{
-q:"Family life?",
-opts:[
-{t:"Very close ❤️",p:2,msg:""},
-{t:"Balanced 😊",p:8,msg:""},
-{t:"Independent 🚶",p:10,msg:""}
-]
-},
-{
-q:"Memories together?",
-opts:[
-{t:"Travel & photos ✈️",p:10,msg:""},
-{t:"Simple moments 🫶",p:6,msg:""},
-{t:"Rare memories 😐",p:2,msg:""}
-]
-}
+const questions=[
+{q:"How do you want me to be?",opts:[{t:"Calm & patient",p:6,msg:""},{t:"3asabe",p:8,msg:""},{t:"Same as now 😅",p:10,msg:""}]},
+{q:"Work?",opts:[{t:"Work",p:4,msg:"Haka anb9a",sad:true},{t:"Business 💡",p:10,msg:""},{t:"Home",p:6,msg:""}]},
+{q:"How we move?",opts:[{t:"Car/moto",p:10,msg:""},{t:"Cars",p:6,msg:""},{t:"Motos",p:8,msg:""}]},
+{q:"Live?",opts:[{t:"House 🏠",p:10,msg:""},{t:"Apartment 🏢",p:8,msg:""},{t:"Farm 🌾",p:10,msg:""}]},
+{q:"Problems?",opts:[{t:"Talk calmly together 🤍",p:10,msg:"Gha ndwew o tsale"},{t:"Take time then talk 🕊️",p:6,msg:""},{t:"Ignore & wait 😐",p:0,msg:""}]},
+{q:"Trust between us?",opts:[{t:"Full trust ❤️",p:10,msg:""},{t:"Trust with limits 🤝",p:6,msg:""},{t:"Hard to trust 😶",p:2,msg:""}]},
+{q:"Time together?",opts:[{t:"Day yes day no 💞",p:10,msg:""},{t:"Weekends 🥰",p:8,msg:""},{t:"When free only 😐",p:4,msg:""}]},
+{q:"When one of us is sad?",opts:[{t:"Always support 💖",p:10,msg:""},{t:"Support when possible 🙂",p:6,msg:""},{t:"Everyone alone 😶",p:-2,msg:""}]},
+{q:"Romantic life?",opts:[{t:"Small surprises 💌",p:6,msg:""},{t:"Special days 🎉",p:8,msg:""},{t:"Same like now",p:10,msg:""},{t:"Not important 😅",p:2,msg:""}]},
+{q:"Fun together?",opts:[{t:"Laugh daily 🤣",p:10,msg:""},{t:"Sometimes 😊",p:8,msg:""},{t:"Rarely 😐",p:2,msg:""}]},
+{q:"Personal freedom?",opts:[{t:"Free & respectful 💖",p:10,msg:""},{t:"Limited 😐",p:4,msg:""},{t:"Strict 🚫",p:2,msg:""}]},
+{q:"Dreams?",opts:[{t:"Together ✨",p:10,msg:""},{t:"Separate 🎯",p:6,msg:""},{t:"No plans 😶",p:2,msg:""}]},
+{q:"Family life?",opts:[{t:"Very close ❤️",p:2,msg:""},{t:"Balanced 😊",p:8,msg:""},{t:"Independent 🚶",p:10,msg:""}]},
+{q:"Memories?",opts:[{t:"Travel ✈️",p:10,msg:""},{t:"Simple moments 🫶",p:6,msg:""},{t:"Rare 😐",p:2,msg:""}]}
 ];
 
-let currentIndex = 0;
-let selectedOption = null;
-let scores = new Array(questions.length).fill(0);
-let workSad = false; 
+let i=0,sel=null,score=new Array(questions.length).fill(0),sad=false;
+const c=document.getElementById("question-container"),
+m=document.getElementById("mood"),
+b=document.getElementById("bar"),
+msg=document.getElementById("message"),
+btn=document.getElementById("confirmBtn");
 
-const container = document.getElementById("question-container");
-const mood = document.getElementById("mood");
-const bar = document.getElementById("bar");
-const message = document.getElementById("message");
-const confirmBtn = document.getElementById("confirmBtn");
+function showQ(n){
+  const q=questions[n];
+  c.innerHTML="";
+  msg.innerText="";
+  sel=null;
 
-function showQuestion(index){
-  const q = questions[index];
-  container.innerHTML = "";
-  message.innerText = "";
-  selectedOption = null;
+  const box=document.createElement("div");
+  box.className="fadeUp bg-white/10 backdrop-blur-xl rounded-2xl p-6 shadow-2xl";
 
-  const card = document.createElement("div");
-  card.className = "card-question";
+  const h=document.createElement("h3");
+  h.className="mb-4 text-xl font-semibold";
+  h.innerText=q.q;
+  box.appendChild(h);
 
-  const title = document.createElement("h4");
-  title.innerText = q.q;
-  card.appendChild(title);
-
-  q.opts.forEach(opt=>{
-    const btn = document.createElement("button");
-    btn.className = "btn btn-outline-primary btn-option";
-    btn.innerText = opt.t;
-
-    btn.onclick = () => {
-      q.opts.forEach(o => o.btnEl?.classList.remove("selected-option"));
-
-      btn.classList.add("selected-option");
-      selectedOption = opt;
-
-      if(opt.sad){
-        workSad = true;
-        scores[currentIndex] = 0; 
-      } else {
-        scores[currentIndex] = opt.p;
-      }
-
-      message.innerText = opt.msg || "";
-      updateMood();
+  q.opts.forEach(o=>{
+    const bt=document.createElement("button");
+    bt.className="block w-full mb-2 py-2 rounded-full border border-white/30 hover:bg-white hover:text-black transition";
+    bt.innerText=o.t;
+    bt.onclick=()=>{
+      [...box.querySelectorAll("button")].forEach(x=>x.classList.remove("bg-white","text-black"));
+      bt.classList.add("bg-white","text-black");
+      sel=o;
+      if(o.sad){sad=true;score[n]=0}else score[n]=o.p;
+      msg.innerText=o.msg||"";
+      update();
     };
-
-    opt.btnEl = btn;
-    card.appendChild(btn);
+    box.appendChild(bt);
   });
 
-  container.appendChild(card);
+  c.appendChild(box);
 }
 
-confirmBtn.onclick = () => {
-  if(!selectedOption){
-    alert("Please select an option first!");
-    return;
-  }
-  currentIndex++;
-  if(currentIndex < questions.length){
-    showQuestion(currentIndex);
-  } else {
-    container.innerHTML = "<h3>All done! 💖</h3>";
-    message.innerText = "";
-    confirmBtn.style.display = "none";
-    updateMood(true); 
+btn.onclick=()=>{
+  if(!sel){alert("Choose first");return;}
+  i++;
+  if(i<questions.length) showQ(i);
+  else{
+    c.innerHTML="<h3 class='text-2xl font-bold'>All done 💖</h3>";
+    btn.style.display="none";
+    update(true);
   }
 };
 
-function updateMood(final=false){
-  let totalScore = scores.reduce((a,b)=>a+b,0);
-
-  if(workSad) {
-    mood.innerText = "😞😞😞";
-    bar.style.width = "10%";
-    bar.className = "progress-bar bg-danger";
+function update(){
+  if(sad){
+    m.innerText="😞😞😞";
+    b.style.width="10%";
+    b.className="h-full bg-red-500";
     return;
   }
-
-  const maxScore = questions.reduce((sum,q)=>sum+Math.max(...q.opts.map(o=>o.p)),0);
-  let percent = Math.round(totalScore/maxScore*100);
-
-  bar.style.width = percent + "%";
-  bar.className = "progress-bar";
-
-  if(percent <= 25) bar.classList.add("bg-danger");
-  else if(percent <= 60) bar.classList.add("bg-warning");
-  else bar.classList.add("bg-success");
-
-  let emojis = ["😞","😕","😐","🙂","😊","😄","😁","😍","🤩","🔥"];
-  let emojiIndex = Math.min(9, Math.floor(percent/10));
-  mood.innerText = emojis[emojiIndex];
+  let t=score.reduce((a,b)=>a+b,0);
+  let max=questions.reduce((s,q)=>s+Math.max(...q.opts.map(o=>o.p)),0);
+  let p=Math.round(t/max*100);
+  b.style.width=p+"%";
+  b.className="h-full transition-all duration-500 "+(p<30?"bg-red-500":p<60?"bg-yellow-400":"bg-green-500");
+  let e=["😞","😕","😐","🙂","😊","😄","😁","😍","🤩","🔥"];
+  m.innerText=e[Math.min(9,Math.floor(p/10))];
 }
 
-showQuestion(currentIndex);
+showQ(i);
 </script>
 
 </body>
